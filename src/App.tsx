@@ -224,7 +224,7 @@ export default function App() {
       </main>
 
       <footer className="footer">
-        <div className="footer-top">🌍 A goofier way to search the whole net</div>
+        {/* <div className="footer-top">🌍 A goofier way to search the whole net</div> */}
         <div className="footer-bottom">
           <div className="footer-links">
             <a href="#" onClick={(e) => e.preventDefault()}>
