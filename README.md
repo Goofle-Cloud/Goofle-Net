@@ -22,21 +22,28 @@ bun run build      # type-checks, then builds to dist/
 bun run preview    # serve the production build locally
 ```
 
-## Deploy to Cloudflare Pages
+## Deploy to Cloudflare (Workers Static Assets)
 
-**Option A — Git integration (recommended):** Connect the repo in the Cloudflare
-dashboard and use:
+This project deploys as a Cloudflare **Worker serving static assets** (the
+unified Workers + Pages model). Config lives in `wrangler.jsonc`, which points
+`wrangler deploy` at `./dist` and serves `index.html` for unknown routes
+(`not_found_handling: single-page-application`).
+
+**Git integration (Workers Builds):** Connect the repo in the Cloudflare
+dashboard with:
 
 - Build command: `bun run build`
-- Build output directory: `dist`
+- Deploy command: `wrangler deploy` (the default — it reads `wrangler.jsonc`)
 
-**Option B — Direct upload via Wrangler:**
+On every push, Cloudflare builds `dist/` and `wrangler deploy` uploads it.
+
+**Manual deploy from your machine:**
 
 ```sh
-bun run deploy     # builds, then runs `wrangler pages deploy dist`
+bun run deploy     # builds, then runs `wrangler deploy`
 ```
 
-The first deploy will prompt you to log in and create the Pages project.
+> The `name` in `wrangler.jsonc` must match your Cloudflare Worker name.
 
 ## How it works
 
@@ -45,7 +52,8 @@ The first deploy will prompt you to log in and create the Pages project.
 - `src/App.tsx` — search, buttons, randomized taglines, and the confetti burst.
 - `src/index.css` — the entire aesthetic: floating blobs, grain overlay,
   staggered entrance, and animations (respects `prefers-reduced-motion`).
-- `public/_redirects` — SPA fallback so every route serves `index.html`.
+- `wrangler.jsonc` — Cloudflare config; serves `dist/` with an SPA fallback so
+  every route serves `index.html`.
 
 "Goofle Search" and "I'm Feeling Goofy" both redirect to a real Google search —
 the latter with a goofy surprise query if the box is empty.

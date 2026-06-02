@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "goofle-net",
+  "compatibility_date": "2026-06-02",
+  "assets": {
+    "directory": "./dist",
+    // Serve index.html for unknown routes so client-side routing works.
+    "not_found_handling": "single-page-application"
+  }
+}
